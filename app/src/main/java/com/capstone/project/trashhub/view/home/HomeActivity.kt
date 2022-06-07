@@ -1,7 +1,8 @@
-package com.capstone.project.trashhub
+package com.capstone.project.trashhub.view.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.capstone.project.trashhub.R
 
 class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
