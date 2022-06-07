@@ -1,8 +1,27 @@
 <resources>
     <string name="app_name">TrashHub</string>
-<!--  customview  -->
+    <!--  customview  -->
     <string name="email_is_invalid">Email tidak valid</string>
     <string name="password_min_6_char">password kurang dari 6 character</string>
     <!--  customview  -->
+
+    <!--  Ui login & register  -->
+    <string name="title_login">Siap untuk mengelola sampah</string>
+    <string name="subtitle_login">Masukkan data diri anda melalui TrashHub App</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="login_option">Atau masuk dengan</string>
+    <string name="title_register">Kelola sampah anda</string>
+    <string name="subtitle_register">Dengan mendaftarkan diri anda melalui TrashHub App</string>
+    <string name="name">Nama</string>
+    <string name="conf_pass">Ulangi Password</string>
+
+
+    <!--  Ui login & register  -->
+
+
+
 
 </resources>
