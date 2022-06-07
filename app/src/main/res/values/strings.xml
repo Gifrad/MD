@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">TrashHub</string>
+<!--  customview  -->
+    <string name="email_is_invalid">Email tidak valid</string>
+    <string name="password_min_6_char">password kurang dari 6 character</string>
+    <!--  customview  -->
+
 </resources>
