@@ -14,6 +14,7 @@ import com.capstone.project.trashhub.network.model.ListBankSampah
 import com.capstone.project.trashhub.view.adapter.ListBankSampahAdapter
 import com.capstone.project.trashhub.view.login.LoginActivity
 import com.capstone.project.trashhub.view.profile.ProfileActivity
+import com.capstone.project.trashhub.view.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -43,6 +44,9 @@ class HomeActivity : AppCompatActivity() {
         }
         binding.imgProfile.setOnClickListener {
             startActivity(Intent(this, ProfileActivity::class.java))
+        }
+        binding.etSearch.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
         }
     }
 
