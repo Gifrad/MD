@@ -47,6 +47,7 @@
     <string name="cari_bank_sampah_terdekat">Cari Bank Sampah Terdekat</string>
     <string name="temukan_bank_sampah_pilihanmu">Temukan bank sampah pilihanmu</string>
     <string name="data_tidak_ditemukan">Data Tidak Ditemukan</string>
+    <string name="title_activity_maps">MapsActivity</string>
     <!-- UI Search-->
 
 

@@ -13,6 +13,7 @@ import com.capstone.project.trashhub.databinding.ActivityHomeBinding
 import com.capstone.project.trashhub.network.model.ListBankSampah
 import com.capstone.project.trashhub.view.adapter.ListBankSampahAdapter
 import com.capstone.project.trashhub.view.login.LoginActivity
+import com.capstone.project.trashhub.view.maps.MapsActivity
 import com.capstone.project.trashhub.view.profile.ProfileActivity
 import com.capstone.project.trashhub.view.search.SearchActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -47,6 +48,9 @@ class HomeActivity : AppCompatActivity() {
         }
         binding.etSearch.setOnClickListener {
             startActivity(Intent(this, SearchActivity::class.java))
+        }
+        binding.iconMaps.setOnClickListener {
+            startActivity(Intent(this, MapsActivity::class.java))
         }
     }
 
