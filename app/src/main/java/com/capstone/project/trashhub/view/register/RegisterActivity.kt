@@ -1,10 +1,18 @@
 package com.capstone.project.trashhub.view.register
 
+import android.content.ContentValues
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.project.trashhub.databinding.ActivityRegisterBinding
+import com.capstone.project.trashhub.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
+import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -52,10 +60,43 @@ class RegisterActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
             }
+            registerUser(name,email, pass)
         }
     }
 
-        private fun showLoading(state: Boolean) {
+    private fun registerUser(name: String, email: String, pass: String) {
+        auth.createUserWithEmailAndPassword(email, pass)
+            .addOnCompleteListener(this) {
+                showLoading(false)
+                if (it.isSuccessful) {
+                    val userFirebase = Firebase.auth.currentUser
+                    val profileUpdate = userProfileChangeRequest {
+                        displayName = name
+                    }
+                    userFirebase!!.updateProfile(profileUpdate)
+                        .addOnCompleteListener{ task ->
+                            if(task.isSuccessful){
+                                Log.d(ContentValues.TAG, "Name Terdaftar")
+                            }
+                        }
+                    Intent(
+                        this@RegisterActivity,
+                        LoginActivity::class.java
+                    ).also { intent ->
+                        intent.flags =
+                            Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+                    Toast.makeText(this, "Berhasil Mendaftar", Toast.LENGTH_SHORT).show()
+                } else {
+                    showLoading(false)
+                    Toast.makeText(this, "Gagal Mendaftar", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+
+    private fun showLoading(state: Boolean) {
             if (state) {
                 binding.progressBar.visibility = View.VISIBLE
             } else {
