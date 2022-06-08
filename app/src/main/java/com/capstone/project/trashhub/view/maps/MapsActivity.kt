@@ -3,12 +3,14 @@ package com.capstone.project.trashhub.view.maps
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -22,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import java.io.IOException
@@ -48,11 +51,50 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         setupViewModel()
         setupAction()
+        setAdapter()
     }
 
     private fun setupViewModel() {
         mapsViewModel = ViewModelProvider(this).get(MapsViewModel::class.java)
         mapsViewModel.getBankSampahLocation()
+    }
+
+    private fun setAdapter() {
+        val userMarkerOptions = MarkerOptions()
+        mapsViewModel.listBankSampah.observe(this) {
+            for (element in it) {
+                Log.d(
+                    "Data Map: ",
+                    element.latitude.toString() + " lon =" + element.longitude.toString()
+                )
+//                LatLong with API
+//                val location = LatLng(element.latitude.toDouble(), element.longitude.toDouble())
+
+//                LatLong with single sintaks
+                val location = LatLng(-6.234277, "106.856887".toDouble())
+
+                val geofenceRadius = 400.0
+                userMarkerOptions.position(location)
+                userMarkerOptions.title(element.name)
+                userMarkerOptions.snippet("\"${element.latitude}, ${element.longitude}")
+                userMarkerOptions.icon(
+                    BitmapDescriptorFactory.defaultMarker(
+                        BitmapDescriptorFactory.HUE_GREEN
+                    )
+                )
+                mMap.addMarker(userMarkerOptions)
+                mMap.addCircle(
+                    CircleOptions()
+                        .center(location)
+                        .radius(geofenceRadius)
+                        .fillColor(Color.GREEN)
+                        .strokeColor(Color.GREEN)
+                        .strokeWidth(3f)
+                )
+
+            }
+        }
+
     }
 
     private fun setupAction() {
@@ -94,7 +136,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-        /**
+    /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
@@ -192,9 +234,6 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun showStartMarker(location: Location) {
-//       GET NERBY PLACE
-        /* latitude = location.latitude
-        longitude = location.longitude*/
         val startLocation = LatLng(location.latitude, location.longitude)
         mMap.addMarker(
             MarkerOptions()
