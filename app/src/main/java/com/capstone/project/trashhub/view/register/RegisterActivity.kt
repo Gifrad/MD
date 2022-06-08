@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.capstone.project.trashhub.databinding.ActivityRegisterBinding
+import com.capstone.project.trashhub.view.home.HomeActivity
 import com.capstone.project.trashhub.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -23,6 +24,9 @@ class RegisterActivity : AppCompatActivity() {
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
+        setupAction()
+        showLoading(false)
+
     }
 
     private fun setupAction() {
@@ -62,6 +66,11 @@ class RegisterActivity : AppCompatActivity() {
             }
             registerUser(name,email, pass)
         }
+        binding.btnLogin.setOnClickListener {
+            showLoading(true)
+            startActivity(Intent(this, LoginActivity::class.java))
+            finishAffinity()
+        }
     }
 
     private fun registerUser(name: String, email: String, pass: String) {
@@ -93,6 +102,20 @@ class RegisterActivity : AppCompatActivity() {
                     Toast.makeText(this, "Gagal Mendaftar", Toast.LENGTH_SHORT).show()
                 }
             }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (auth.currentUser != null){
+            Intent(
+                this@RegisterActivity,
+                HomeActivity::class.java
+            ).also { intent ->
+                intent.flags =
+                    Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+        }
     }
 
 
