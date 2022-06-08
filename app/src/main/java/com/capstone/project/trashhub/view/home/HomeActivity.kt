@@ -1,10 +1,13 @@
 package com.capstone.project.trashhub.view.home
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.capstone.project.trashhub.databinding.ActivityHomeBinding
 import com.capstone.project.trashhub.network.model.ListBankSampah
@@ -18,6 +21,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var homeViewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +31,7 @@ class HomeActivity : AppCompatActivity() {
         showLoading(false)
         setupAction()
         userValidation()
+        setupViewModel()
 
     }
 
@@ -49,6 +54,20 @@ class HomeActivity : AppCompatActivity() {
         } else {
             binding.tvUsername.text = "Hai ${firebaseUser.displayName}"
         }
+    }
+
+    private fun setupViewModel() {
+        homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
+
+        homeViewModel.listBankSampah.observe(this) {
+            if (it != null) {
+                getAdapter(it)
+                Log.d(ContentValues.TAG, "onCreate: ${it[1]}")
+            }
+        }
+
+        homeViewModel.getBankSampah()
+
     }
 
     private fun getAdapter(listBankSampah: ArrayList<ListBankSampah>) {
