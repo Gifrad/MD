@@ -13,6 +13,7 @@ import com.capstone.project.trashhub.databinding.ActivityHomeBinding
 import com.capstone.project.trashhub.network.model.ListBankSampah
 import com.capstone.project.trashhub.view.adapter.ListBankSampahAdapter
 import com.capstone.project.trashhub.view.login.LoginActivity
+import com.capstone.project.trashhub.view.profile.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
@@ -40,7 +41,9 @@ class HomeActivity : AppCompatActivity() {
             showLoading(true)
             signOut()
         }
-
+        binding.imgProfile.setOnClickListener {
+            startActivity(Intent(this, ProfileActivity::class.java))
+        }
     }
 
     @SuppressLint("SetTextI18n")
