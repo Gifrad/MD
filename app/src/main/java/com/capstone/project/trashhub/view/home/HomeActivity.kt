@@ -5,7 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.GridLayoutManager
 import com.capstone.project.trashhub.databinding.ActivityHomeBinding
+import com.capstone.project.trashhub.network.model.ListBankSampah
+import com.capstone.project.trashhub.view.adapter.ListBankSampahAdapter
 import com.capstone.project.trashhub.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -48,11 +51,21 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun getAdapter(listBankSampah: ArrayList<ListBankSampah>) {
+        val adapter = ListBankSampahAdapter()
+        adapter.setList(listBankSampah)
+        binding.apply {
+            rvRecomendasi.layoutManager = GridLayoutManager(this@HomeActivity, 2)
+            rvRecomendasi.adapter = adapter
+        }
+    }
+
     private fun signOut() {
         auth.signOut()
         startActivity(Intent(this, LoginActivity::class.java))
         finish()
     }
+
 
     private fun showLoading(state: Boolean) {
         if (state) {
