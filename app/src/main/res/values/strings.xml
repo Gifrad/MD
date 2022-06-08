@@ -43,5 +43,11 @@
     <string name="simpan">Simpan</string>
     <!--  UI Profile  -->
 
+    <!-- UI Search-->
+    <string name="cari_bank_sampah_terdekat">Cari Bank Sampah Terdekat</string>
+    <string name="temukan_bank_sampah_pilihanmu">Temukan bank sampah pilihanmu</string>
+    <string name="data_tidak_ditemukan">Data Tidak Ditemukan</string>
+    <!-- UI Search-->
+
 
 </resources>

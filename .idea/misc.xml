@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/back_button.xml" value="0.1205" />
+        <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/back_button_search.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/bg_home.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/bg_profile.xml" value="0.1205" />
+        <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/bg_search_actvitiy.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/custom_searchview.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/ic_baseline_person_50.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/ic_bg_scan.xml" value="0.1205" />
@@ -17,6 +19,7 @@
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_register.xml" value="0.25" />
+        <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_search.xml" value="0.20416666666666666" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/item_bank_sampah.xml" value="0.20416666666666666" />
       </map>
     </option>
