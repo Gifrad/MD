@@ -1,3 +1,54 @@
 <resources>
     <string name="app_name">TrashHub</string>
+    <!--  customview  -->
+    <string name="email_is_invalid">Email tidak valid</string>
+    <string name="password_min_6_char">password kurang dari 6 character</string>
+    <!--  customview  -->
+
+    <!--  Ui login & register  -->
+    <string name="title_login">Siap untuk mengelola sampah</string>
+    <string name="subtitle_login">Masukkan data diri anda melalui TrashHub App</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="register">Register</string>
+    <string name="login">Login</string>
+    <string name="login_option">Atau masuk dengan</string>
+    <string name="title_register">Kelola sampah anda</string>
+    <string name="subtitle_register">Dengan mendaftarkan diri anda melalui TrashHub App</string>
+    <string name="name">Nama</string>
+    <string name="conf_pass">Ulangi Password</string>
+    <!--  Ui login & register  -->
+
+    <!--  UI Home  -->
+    <string name="cari_bank_sampah">Cari bank sampah terdekat</string>
+    <string name="hai_username">Hai Username</string>
+    <string name="selamat_pagi">Selamat pagi</string>
+    <string name="jumlah_poin">200 poin</string>
+    <string name="paragraf_home">Scan sampahmu agar mendapatkan pengetahuan</string>
+    <string name="angkut_sampah">Angkut Sampah</string>
+    <string name="jual_sampah">Jual Sampah</string>
+    <string name="riwayat_pesanan">Riwayat Pesanan</string>
+    <string name="Title_home">Daftar Bank Sampah</string>
+    <string name="sub_title_home">Temukan Bank sampah pilihanmu</string>
+
+    <!--  UI Home  -->
+
+    <!--  UI Profile  -->
+    <string name="appbar">Profile</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="no_telepon">No Telepon</string>
+    <string name="alamat">Alamat</string>
+    <string name="simpan">Simpan</string>
+    <!--  UI Profile  -->
+
+    <!-- UI Search-->
+    <string name="cari_bank_sampah_terdekat">Cari Bank Sampah Terdekat</string>
+    <string name="temukan_bank_sampah_pilihanmu">Temukan bank sampah pilihanmu</string>
+    <string name="data_tidak_ditemukan">Data Tidak Ditemukan</string>
+    <string name="title_activity_maps">MapsActivity</string>
+    <!-- UI Search-->
+
+
 </resources>
