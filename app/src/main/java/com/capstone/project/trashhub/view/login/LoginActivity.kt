@@ -1,7 +1,6 @@
 package com.capstone.project.trashhub.view.login
 
 import android.app.Activity
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -37,6 +36,7 @@ class LoginActivity : AppCompatActivity() {
         setupAction()
         configGoogle()
         googleBtnClick()
+        showLoading(false)
     }
 
     private fun setupAction() {
@@ -182,5 +182,9 @@ class LoginActivity : AppCompatActivity() {
         } else {
             binding.progressBar.visibility = View.GONE
         }
+    }
+
+    companion object {
+        private const val TAG = "LoginActivity"
     }
 }
