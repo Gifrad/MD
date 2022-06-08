@@ -3,29 +3,36 @@ package com.capstone.project.trashhub.view.maps
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.databinding.ActivityMapsBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import java.io.IOException
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var mapsViewModel: MapsViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,9 +46,55 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        setupViewModel()
+        setupAction()
     }
 
-    /**
+    private fun setupViewModel() {
+        mapsViewModel = ViewModelProvider(this).get(MapsViewModel::class.java)
+        mapsViewModel.getBankSampahLocation()
+    }
+
+    private fun setupAction() {
+        binding.searchAddress.setOnClickListener {
+            val address = binding.locationSearch.text.toString()
+            var addressList: List<Address>? = null
+            val userMarkerOptions = MarkerOptions()
+            if (!TextUtils.isEmpty(address)) {
+                val geocoder = Geocoder(this)
+                try {
+                    addressList = geocoder.getFromLocationName(address, 6)
+                    if (addressList != null) {
+                        var i = 0
+                        while (i < addressList.size) {
+                            val userAddress = addressList[i]
+                            val latLng = LatLng(userAddress.latitude, userAddress.longitude)
+                            userMarkerOptions.position(latLng)
+                            userMarkerOptions.title(address)
+                            userMarkerOptions.icon(
+                                BitmapDescriptorFactory.defaultMarker(
+                                    BitmapDescriptorFactory.HUE_ORANGE
+                                )
+                            )
+                            mMap.addMarker(userMarkerOptions)
+                            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+                            mMap.animateCamera(CameraUpdateFactory.zoomTo(10f))
+                            i++
+                        }
+                    } else {
+                        Toast.makeText(this, "Lokasi tidak ada", Toast.LENGTH_SHORT).show()
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            } else {
+                Toast.makeText(this, "Tulis nama lokasi terlebih dahulu", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+        /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
      * This is where we can add markers or lines, add listeners or move the camera. In this case,
