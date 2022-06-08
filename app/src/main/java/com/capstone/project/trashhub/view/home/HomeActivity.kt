@@ -1,9 +1,10 @@
 package com.capstone.project.trashhub.view.home
 
+import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.capstone.project.trashhub.databinding.ActivityHomeBinding
 import com.capstone.project.trashhub.view.login.LoginActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -22,12 +23,28 @@ class HomeActivity : AppCompatActivity() {
         auth = Firebase.auth
         showLoading(false)
         setupAction()
+        userValidation()
 
     }
+
     private fun setupAction() {
         binding.imgLogout.setOnClickListener {
             showLoading(true)
             signOut()
+        }
+
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun userValidation() {
+        val firebaseUser = auth.currentUser
+        if (firebaseUser == null) {
+            // Not signed in, launch the Login activity
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        } else {
+            binding.tvUsername.text = "Hai ${firebaseUser.displayName}"
         }
     }
 
