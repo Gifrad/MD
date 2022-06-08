@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "677527414811-hgmlf6c83rnbeqpjjbsc64oh5n39i61j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.capstone.project.trashhub",
+            "certificate_hash": "1f60ef49e2f66d8ffc76724e50b3c5204d66b59d"
+          }
+        },
+        {
           "client_id": "677527414811-slbl7mm0ma5dpf3qf7k3gah95e3alvq2.apps.googleusercontent.com",
           "client_type": 3
         }
