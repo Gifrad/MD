@@ -33,5 +33,15 @@
 
     <!--  UI Home  -->
 
+    <!--  UI Profile  -->
+    <string name="appbar">Profile</string>
+    <string name="jenis_kelamin">Jenis Kelamin</string>
+    <string name="male">male</string>
+    <string name="female">female</string>
+    <string name="no_telepon">No Telepon</string>
+    <string name="alamat">Alamat</string>
+    <string name="simpan">Simpan</string>
+    <!--  UI Profile  -->
+
 
 </resources>
