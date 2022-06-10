@@ -12,7 +12,7 @@ import com.bumptech.glide.Glide
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.network.model.ListBankSampah
 
-class ListBankSampahAdapter: RecyclerView.Adapter<ListBankSampahAdapter.ListViewHolder>() {
+class ListBankSampahAdapter : RecyclerView.Adapter<ListBankSampahAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
     private val list = ArrayList<ListBankSampah>()
 
@@ -27,7 +27,7 @@ class ListBankSampahAdapter: RecyclerView.Adapter<ListBankSampahAdapter.ListView
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var tvName: TextView = itemView.findViewById(R.id.tv_name_bank_sampah)
         private var tvLocation: TextView = itemView.findViewById(R.id.tv_location)
-        private var imgList : ImageView = itemView.findViewById(R.id.img_bank_sampah)
+        private var imgList: ImageView = itemView.findViewById(R.id.img_bank_sampah)
 
         fun bind(list: ListBankSampah) {
             with(itemView) {
@@ -36,6 +36,7 @@ class ListBankSampahAdapter: RecyclerView.Adapter<ListBankSampahAdapter.ListView
                 tvLocation.text = list.street
                 Glide.with(itemView.context)
                     .load(list.featuredImage)
+                    .placeholder(R.drawable.img_placeholder)
                     .into(imgList)
             }
         }
