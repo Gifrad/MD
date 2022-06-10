@@ -4,9 +4,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.network.model.ListBankSampah
 
@@ -25,12 +27,16 @@ class ListBankSampahAdapter: RecyclerView.Adapter<ListBankSampahAdapter.ListView
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var tvName: TextView = itemView.findViewById(R.id.tv_name_bank_sampah)
         private var tvLocation: TextView = itemView.findViewById(R.id.tv_location)
+        private var imgList : ImageView = itemView.findViewById(R.id.img_bank_sampah)
 
         fun bind(list: ListBankSampah) {
             with(itemView) {
                 Log.d("ListBankSampahAdapter", "bind: ${list.name}")
                 tvName.text = list.name
                 tvLocation.text = list.street
+                Glide.with(itemView.context)
+                    .load(list.featuredImage)
+                    .into(imgList)
             }
         }
     }

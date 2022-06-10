@@ -68,10 +68,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                     element.latitude.toString() + " lon =" + element.longitude.toString()
                 )
 //                LatLong with API
-//                val location = LatLng(element.latitude.toDouble(), element.longitude.toDouble())
+                val location = LatLng(element.latitude.toDouble(), element.longitude.toDouble())
 
 //                LatLong with single sintaks
-                val location = LatLng(-6.234277, "106.856887".toDouble())
+//                val location = LatLng(-6.234277, "106.856887".toDouble())
 
                 val geofenceRadius = 400.0
                 userMarkerOptions.position(location)

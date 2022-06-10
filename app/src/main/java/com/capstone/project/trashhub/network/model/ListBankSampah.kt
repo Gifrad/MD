@@ -21,10 +21,13 @@ data class ListBankSampah (
     @field:SerializedName("Latitude")
     var latitude : String,
 
-    @field:SerializedName("Longitude")
+    @field:SerializedName("Longitudea")
     var longitude : String,
 
-    @field:SerializedName("Place Id")
+    @field:SerializedName("Place_Id")
     var id : String,
 
-    ): Parcelable
+    @field:SerializedName("Featured_Image")
+    var featuredImage : String
+
+): Parcelable
