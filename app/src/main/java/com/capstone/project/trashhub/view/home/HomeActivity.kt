@@ -24,7 +24,6 @@ import com.capstone.project.trashhub.view.adapter.ListBankSampahAdapter
 import com.capstone.project.trashhub.view.detailbanksampah.DetailBankSampahActivity
 import com.capstone.project.trashhub.view.login.LoginActivity
 import com.capstone.project.trashhub.view.maps.MapsActivity
-import com.capstone.project.trashhub.view.message.MessageActivity
 import com.capstone.project.trashhub.view.profile.ProfileActivity
 import com.capstone.project.trashhub.view.riwayat.RiwayatActivity
 import com.capstone.project.trashhub.view.scan.ResultScanActivity
@@ -33,6 +32,7 @@ import com.denzcoskun.imageslider.ImageSlider
 import com.denzcoskun.imageslider.models.SlideModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 
@@ -40,6 +40,7 @@ class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
     private lateinit var auth: FirebaseAuth
+    private lateinit var firebaseFirestore: FirebaseFirestore
     private lateinit var homeViewModel: HomeViewModel
     var sliderView: ImageSlider? = null
     var textSapaan: TextView? = null
@@ -51,12 +52,26 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
+        firebaseFirestore = FirebaseFirestore.getInstance()
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         userValidation()
-        showLoading(false)
+        showLoading(true)
         setupAction()
         setupViewModel()
+
+        val documentReference = firebaseFirestore.collection("Users")
+        
+        documentReference.document(auth.currentUser?.uid.toString())
+            .get()
+            .addOnSuccessListener {
+                if (it.data?.get("poin")?.equals("") == false){
+                    binding.tvPrice.text = it.data?.get("poin").toString()
+                }else{
+                    binding.tvPrice.text = "-"
+                }
+                Log.d(TAG, "onCreate: ${it.data}")
+            }
 
         sliderView = findViewById(R.id.img_home)
         textSapaan = findViewById(R.id.tv_sapaan_waktu)
@@ -194,6 +209,7 @@ class HomeActivity : AppCompatActivity() {
         homeViewModel.listBankSampah.observe(this) {
             if (it != null) {
                 getAdapter(it)
+                showLoading(false)
                 Log.d(ContentValues.TAG, "onCreate: ${it[1]}")
             }
         }

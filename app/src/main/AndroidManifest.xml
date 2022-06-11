@@ -26,9 +26,6 @@
             android:name=".view.transaksi.TransaksiActivity"
             android:exported="false" />
         <activity
-            android:name=".view.message.MessageActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.scan.ResultScanActivity"
             android:exported="false" />
         <activity

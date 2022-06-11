@@ -4,15 +4,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.StringRes
 import androidx.viewpager2.widget.ViewPager2
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.network.model.ListBankSampah
 import com.capstone.project.trashhub.view.detailbanksampah.fragment.DetailBankSampahFragment
+import com.capstone.project.trashhub.view.home.HomeActivity
 import com.capstone.project.trashhub.view.transaksi.TransaksiActivity
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -24,6 +22,7 @@ import com.squareup.picasso.Picasso
 class DetailBankSampahActivity : AppCompatActivity() {
     private lateinit var tabLayout: TabLayout
     private lateinit var buttonBerlangganan: Button
+    private lateinit var buttonBackHome: ImageButton
     private lateinit var namaBankSampah : TextView
     private lateinit var namaJalanBankSampah : TextView
     private lateinit var imageBankSampah: ImageView
@@ -49,6 +48,7 @@ class DetailBankSampahActivity : AppCompatActivity() {
         imageBankSampah = findViewById(R.id.image_view_detail_bank_sampah)
         namaBankSampah = findViewById(R.id.tv_nama_bank_sampah_detail)
         namaJalanBankSampah = findViewById(R.id.tv_lokasi_bank_sampah_detail)
+        buttonBackHome = findViewById(R.id.btn_back_home_detail)
 
         if (data.imageUrl.isNotEmpty()){
             Picasso.get().load(data.imageUrl).into(imageBankSampah)
@@ -56,6 +56,12 @@ class DetailBankSampahActivity : AppCompatActivity() {
 
         if (data.name.isNotEmpty() == true){
             namaBankSampah.text = data.name
+        }
+
+        buttonBackHome.setOnClickListener {
+            Intent(this,HomeActivity::class.java).let {
+                startActivity(it)
+            }
         }
         namaJalanBankSampah.text = data.street
 //        fragment detail

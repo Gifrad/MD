@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.icu.util.Calendar
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.network.model.ListBankSampah
 import com.capstone.project.trashhub.view.customview.CustomSpinner
@@ -17,6 +18,7 @@ import com.capstone.project.trashhub.view.success.SuccessActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import com.stripe.android.PaymentConfiguration
 import com.stripe.android.paymentsheet.PaymentSheet
@@ -39,6 +41,7 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
     private lateinit var buttonTransaksi: Button
     private lateinit var spinnerGender: Spinner
     private lateinit var imageTransaksi : ImageButton
+    private lateinit var constraintLayoutAlamat : ConstraintLayout
 
     private lateinit var paymentIntentClientSecret: String
     private lateinit var paymentSheet: PaymentSheet
@@ -52,6 +55,8 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
     private lateinit var tanggalPesan : SimpleDateFormat
     private lateinit var calendar: Calendar
     private lateinit var valueDate: String
+
+    val langganan = arrayOf("harian","mingguan","bulanan")
 
     @SuppressLint("SimpleDateFormat", "WeekBasedYear")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +78,7 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
         buttonTransaksi = findViewById(R.id.button_next_to_transaksi_detail)
         spinnerGender = findViewById(R.id.spinner_gender_transaksi)
         imageTransaksi = findViewById(R.id.imageView_transaksi)
+        constraintLayoutAlamat = findViewById(R.id.constraint_layout_alamat_checkout)
         tanggalPesan = SimpleDateFormat("EE, dd MM YY")
         calendar = Calendar.getInstance()
 
@@ -87,12 +93,30 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
         fireStore = FirebaseFirestore.getInstance()
         supportActionBar?.elevation = 0f
         buttonTransaksi.isEnabled = false
-
+        spinnerValue = ""
 //        spinner
-        spinnerValue = spinnerGender.selectedItem.toString()
-        Log.d(TAG, "pilihSPinner: ${spinnerGender.selectedItem}")
+        val arrayAdapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,langganan)
+        spinnerGender.adapter = arrayAdapter
+        spinnerGender.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (langganan[p2] == "harian"){
+                    Toast.makeText(this@TransaksiActivity,"2000",Toast.LENGTH_SHORT).show()
+                    spinnerValue = "2000"
+                }
+                else if (langganan[p2] == "mingguan"){
+                    Toast.makeText(this@TransaksiActivity,"5000",Toast.LENGTH_SHORT).show()
+                    spinnerValue = "5000"
+                }else if (langganan[p2] == "bulanan"){
+                    Toast.makeText(this@TransaksiActivity,"10000",Toast.LENGTH_SHORT).show()
+                    spinnerValue = "10000"
+                }
+            }
 
-        buttonTransaksi.setOnClickListener(::onPayClicked)
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
+
         paymentSheet = PaymentSheet(this, ::onPaymentSheetResult)
         imageTransaksi.setOnClickListener {
             openFileChooser()
@@ -109,6 +133,8 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
                     Log.d(TAG, "onCreate: ${r.data.get("alamat")}")
                 }
             }
+        validationData()
+
     }
 
     private fun openFileChooser() {
@@ -129,23 +155,29 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
         }
     }
 
-    private fun sendDataTransaction(name: String, noHp: String, catatan: String, alamat: String, idBankSampah :String, pictUrlBankSampah:String, spinner: String) {
+    private fun validationData() {
 
-//            when {
-//                name.isEmpty() -> {
-//    //                showLoading(false)
-//                    binding.nameEdtTextTransaksi.error = "Nama tidak boleh kosong"
-//                    binding.nameEdtTextTransaksi.requestFocus()
-//                    return@setOnClickListener
-//                }
-//                noHp.isEmpty() -> {
-//    //                showLoading(false)
-//                    binding.nohpEdtTextTransaksi.error = "No Hp tidak boleh kosong"
-//                    binding.nohpEdtTextTransaksi.requestFocus()
-//                    return@setOnClickListener
-//                }
-//            }
-                getData(idBankSampah, name, noHp,  catatan, alamat, pictUrlBankSampah, spinner)
+        buttonTransaksi.setOnClickListener {
+
+            when {
+                nameUserText.text == "" -> {
+    //                showLoading(false)
+                    nameUserText.error = "Nama tidak boleh kosong"
+                    return@setOnClickListener
+                }
+                noHpUser.text.isEmpty() -> {
+    //                showLoading(false)
+                    noHpUser.error = "No Hp tidak boleh kosong"
+                    noHpUser.requestFocus()
+                    return@setOnClickListener
+                }
+                alamatUser.text == "" -> {
+                    alamatUser.error = "Alamat tidak boleh kosong"
+                    return@setOnClickListener
+                }
+            }
+            onPayClicked()
+        }
     }
 
     private fun getData(idBankSampah: String,nama: String, noHp: String, catatan: String, alamat: String, pictUrlBankSampah:String, spinner: String) {
@@ -194,7 +226,18 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
 
         val mediaType = "application/json; charset=utf-8".toMediaType()
 
-        val body = shoppingCartContent.toRequestBody(mediaType)
+        val payMap: MutableMap<String, Any> = HashMap()
+        val itemMap: MutableMap<String, Any> = HashMap()
+        val itemList: MutableList<Map<String, Any>> = ArrayList()
+        payMap["currency"] = "usd" //dont change currency in testing phase otherwise it won't work
+
+        itemMap["id"] = "photo_subscription"
+        itemMap["amount"] = spinnerValue
+        itemList.add(itemMap)
+        payMap["items"] = itemList
+
+        val json = Gson().toJson(payMap)
+        val body = json.toRequestBody(mediaType)
         val request = Request.Builder()
             .url(url)
             .post(body)
@@ -237,7 +280,7 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
         }
     }
 
-    private fun onPayClicked(view: View) {
+    private fun onPayClicked() {
         val configuration = PaymentSheet.Configuration("Example, Inc.")
 
         // Present Payment Sheet
@@ -247,7 +290,8 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
     private fun onPaymentSheetResult(paymentResult: PaymentSheetResult) {
         when (paymentResult) {
             is PaymentSheetResult.Completed -> {
-                sendDataTransaction(nameUserText.text.toString(), noHpUser.text.toString(), catatanUser.text.toString(), alamatUser.text.toString(), idBankSampah, pictUrlBankSampah, spinnerValue)
+                getData(idBankSampah, nameUserText.text.toString(), noHpUser.text.toString(),  catatanUser.text.toString(), alamatUser.text.toString(), pictUrlBankSampah, spinnerValue)
+
                 showToast("Payment complete!")
                 Intent(this,SuccessActivity::class.java).let {
                     startActivity(it)

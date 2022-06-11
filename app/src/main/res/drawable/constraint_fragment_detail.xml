@@ -4,4 +4,5 @@
 
     <stroke android:color="@color/green_old_dark" android:width="3dp"/>
     <corners android:radius="5dp"/>
+    <solid android:color="@color/background_layer"/>
 </shape>

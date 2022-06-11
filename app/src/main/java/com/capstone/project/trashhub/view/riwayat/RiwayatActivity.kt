@@ -32,7 +32,7 @@ class RiwayatActivity : AppCompatActivity() {
         databaseReferences = FirebaseDatabase.getInstance().getReference("transaksi")
         fireStore = FirebaseFirestore.getInstance()
 
-        riwayatPesanan = ArrayList<RiwayatPesanan2>()
+        riwayatPesanan = arrayListOf<RiwayatPesanan2>()
         riwayatBinding.apply {
             recyclerviewRiwayat.setHasFixedSize(true)
             recyclerviewRiwayat.setLayoutManager(LinearLayoutManager(this@RiwayatActivity))
@@ -57,16 +57,14 @@ class RiwayatActivity : AppCompatActivity() {
 
     private fun getAdapter(listBankSampah: ArrayList<ListBankSampah>) {
 
-        for (i in listBankSampah){
             databaseReferences
                 .addValueEventListener(object : ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {
                         if (snapshot.exists()){
                             for (it in snapshot.children){
-//                                if (it.equals())
                                 val riwayatPesanan2 = it.getValue(RiwayatPesanan2::class.java)
                                 riwayatPesanan.add(riwayatPesanan2!!)
-                            Log.d("TAG", "onDataChangeValue: ${riwayatPesanan}")
+                            Log.d("TAG", "onDataChangeValue: ${it.value}")
                             }
                         }
                     }
@@ -75,6 +73,7 @@ class RiwayatActivity : AppCompatActivity() {
                         TODO("Not yet implemented")
                     }
                 })
+        for (i in listBankSampah){
 
         }
 
