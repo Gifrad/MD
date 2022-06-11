@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.capstone.project.trashhub">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -13,22 +14,30 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.TrashHub">
+        android:theme="@style/Theme.TrashHub"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name=".view.riwayat.RiwayatActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.success.SuccessActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.transaksi.TransaksiActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.message.MessageActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.scan.ResultScanActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.detailbanksampah.DetailBankSampahActivity"
+            android:exported="false" />
 
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-
-             To get one, follow the directions here:
-
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="${MAPS_API_KEY}" />
+            android:value="AIzaSyCO8pXhlZhFob_DDM-1ZXF8EDk2cdoDeWM" />
 
         <activity
             android:name=".view.maps.MapsActivity"
@@ -54,7 +63,7 @@
         </activity>
         <activity
             android:name=".view.home.HomeActivity"
-            android:exported="true" />
+            android:exported="false" />
     </application>
 
 </manifest>

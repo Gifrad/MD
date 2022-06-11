@@ -39,6 +39,6 @@ class HomeViewModel: ViewModel() {
     }
 
     companion object{
-        const val TAG = "BankSampahRepository"
+        const val TAG = "HomeViewModel"
     }
 }

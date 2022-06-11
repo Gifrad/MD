@@ -55,7 +55,7 @@ class ProfileActivity : AppCompatActivity() {
 
             binding.nameEdtText.setText(user.displayName)
             binding.emailEdtText.setText(user.email)
-            firebaseFirestore.collection(PROFILE_NAME).whereEqualTo("id", user?.uid)
+            firebaseFirestore.collection(PROFILE_NAME).whereEqualTo("id", user.uid)
                 .get()
                 .addOnSuccessListener { result ->
                     for (r in result) {

@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">TrashHub</string>
     <!--  customview  -->
     <string name="email_is_invalid">Email tidak valid</string>
@@ -50,5 +50,32 @@
     <string name="title_activity_maps">MapsActivity</string>
     <!-- UI Search-->
 
+
+    <!-- Scan Sampah -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="perubahan_cardboard">1000/kg</string>
+    <string name="perubahan_metal">1500/kg</string>
+    <string name="perubahan_plastic">500/kg</string>
+    <string name="perubahan_sampah">-</string>
+    <string name="perubahan_glass">500/kg</string>
+    <string name="perubahan_paper">1000/kg</string>
+    <string name="take_picture">Ambil Gambar</string>
+    <string name="classification_as">Diklasifikasin sebagai:</string>
+    <string name="result">Hasil</string>
+    <string name="confidence_level">Tingkat Akurasi:</string>
+    <string name="list_accuration">Akurasi</string>
+    <string name="detail">Detail:</string>
+    <string name="price">Harga =</string>
+    <string name="prive_value">-</string>
+    <!-- Scan Sampah -->
+
+    <!-- Detail Bank Sampah -->
+    <string name="tab_view">Detail</string>
+    <string name="message">Message</string>
+    <!-- Detail Bank Sampah -->
+    <string name="image_home_1" tools:ignore="ReferenceType">@drawable/image_home_4</string>
+    <string name="image_home_2" tools:ignore="ReferenceType">@drawable/image_home</string>
+    <string name="image_home_3" tools:ignore="ReferenceType">@drawable/image_home_2</string>
+    <string name="image_home_4" tools:ignore="ReferenceType">@drawable/image_home_3</string>
 
 </resources>
