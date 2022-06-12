@@ -17,9 +17,6 @@
         android:theme="@style/Theme.TrashHub"
         tools:replace="android:allowBackup">
         <activity
-            android:name=".view.riwayat.RiwayatActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.success.SuccessActivity"
             android:exported="false" />
         <activity

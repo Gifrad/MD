@@ -30,7 +30,6 @@ class ResultScanActivity : AppCompatActivity() {
     var picture: Button? = null
     var imageSize = 224
 
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_result_scan)
@@ -39,6 +38,14 @@ class ResultScanActivity : AppCompatActivity() {
         detailTeks = findViewById(R.id.detailPerubahan)
         imageView = findViewById(R.id.image_view_detail_bank_sampah)
         picture = findViewById(R.id.button)
+            // Launch camera if we have permission
+            if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+                startActivityForResult(cameraIntent, 1)
+            } else {
+                //Request camera permission if we don't have it.
+                requestPermissions(arrayOf(Manifest.permission.CAMERA), 100)
+            }
         picture?.setOnClickListener(View.OnClickListener {
             // Launch camera if we have permission
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
@@ -90,30 +97,27 @@ class ResultScanActivity : AppCompatActivity() {
                     maxPos = i
                 }
             }
-            val classes = arrayOf("Cardboard", "Glass", "metal", "Paper", "Plastic", "Trash")
+            val classes = arrayOf("Kaca", "Plastik", "Kardus", "Kertas", "Metal")
             result?.text = classes[maxPos]
             var s = ""
-            for (i in 0 until classes.size - 1) {
+            for (i in 0 until classes.size) {
                 s += String.format("%s: %.1f%%\n", classes[i], confidences[i] * 100)
             }
             confidence?.setText(s)
-            if (classes[maxPos] == "Cardboard") {
+            if (classes[maxPos] == "Kardus") {
                 detailTeks?.setText(R.string.perubahan_cardboard)
             }
-            if (classes[maxPos] == "Glass") {
+            if (classes[maxPos] == "Kaca") {
                 detailTeks?.setText(R.string.perubahan_glass)
             }
-            if (classes[maxPos] == "metal") {
+            if (classes[maxPos] == "Metal") {
                 detailTeks?.setText(R.string.perubahan_metal)
             }
-            if (classes[maxPos] == "Paper") {
+            if (classes[maxPos] == "Kertas") {
                 detailTeks?.setText(R.string.perubahan_paper)
             }
-            if (classes[maxPos] == "Plastic") {
+            if (classes[maxPos] == "Plastik") {
                 detailTeks?.setText(R.string.perubahan_plastic)
-            }
-            if (classes[maxPos] == "Trash") {
-                detailTeks?.setText(R.string.perubahan_sampah)
             }
 
             // Releases model resources if no longer used.

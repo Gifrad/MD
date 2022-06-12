@@ -1,31 +1,27 @@
 package com.capstone.project.trashhub.view.login
 
-import android.app.Activity
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.databinding.ActivityLoginBinding
 import com.capstone.project.trashhub.view.home.HomeActivity
 import com.capstone.project.trashhub.view.register.RegisterActivity
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInClient
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +29,9 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
         auth = FirebaseAuth.getInstance()
         auth = Firebase.auth
+        dialog = Dialog(this)
+
         setupAction()
-        configGoogle()
         googleBtnClick()
         showLoading(false)
     }
@@ -105,75 +102,25 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-//    GOOGLE
-
-    private fun configGoogle() {
-        val gso = GoogleSignInOptions
-            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-    }
-
     private fun googleBtnClick() {
         binding.btnGoogle.setOnClickListener {
-            showLoading(true)
-            signIn()
-        }
-    }
+            dialog.setContentView(R.layout.perbaikan)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-    private fun signIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        resultLauncher.launch(signInIntent)
-    }
+            val imageViewClose = dialog.findViewById<ImageButton>(R.id.img_button_close_repair)
+            val buttonOk = dialog.findViewById<Button>(R.id.btn_ok_repair)
 
-    private var resultLauncher = registerForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
-            try {
-                // Google Sign In was successful, authenticate with Firebase
-                val account = task.getResult(ApiException::class.java)!!
-                Log.d(TAG, "firebaseAuthWithGoogle:" + account.id)
-                firebaseAuthWithGoogle(account.idToken!!)
-            } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e)
+            imageViewClose.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String) {
-        val credential = GoogleAuthProvider.getCredential(idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(this, "Login dengan Gmail berhasil", Toast.LENGTH_SHORT).show()
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
-                    val user = auth.currentUser
-                    updateUI(user)
-                } else {
-                    Toast.makeText(this, "Login dengan Gmail gagal", Toast.LENGTH_SHORT).show()
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    updateUI(null)
-                }
+            buttonOk.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
             }
-    }
-
-    private fun updateUI(currentUser: FirebaseUser?) {
-        if (currentUser != null) {
-            startActivity(Intent(this@LoginActivity, HomeActivity::class.java))
-            finish()
+            dialog.show()
         }
     }
-
-
-
 
 
     private fun showLoading(state: Boolean) {

@@ -1,9 +1,13 @@
 package com.capstone.project.trashhub.view.detailbanksampah
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.annotation.StringRes
 import androidx.viewpager2.widget.ViewPager2
@@ -26,9 +30,13 @@ class DetailBankSampahActivity : AppCompatActivity() {
     private lateinit var namaBankSampah : TextView
     private lateinit var namaJalanBankSampah : TextView
     private lateinit var imageBankSampah: ImageView
+    private lateinit var buttonMessage: Button
+    private lateinit var progressBarDetail: ProgressBar
     private lateinit var auth: FirebaseAuth
     private lateinit var fireStore : FirebaseFirestore
     private lateinit var databaseReferences : DatabaseReference
+    private lateinit var dialog: Dialog
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val data = intent.getParcelableExtra<ListBankSampah>(EXTRA_DATA_BANK_SAMPAH) as ListBankSampah
@@ -49,6 +57,11 @@ class DetailBankSampahActivity : AppCompatActivity() {
         namaBankSampah = findViewById(R.id.tv_nama_bank_sampah_detail)
         namaJalanBankSampah = findViewById(R.id.tv_lokasi_bank_sampah_detail)
         buttonBackHome = findViewById(R.id.btn_back_home_detail)
+        progressBarDetail = findViewById(R.id.progressBarDetail)
+        buttonMessage = findViewById(R.id.btn_message)
+
+        showLoading(true)
+        dialog = Dialog(this)
 
         if (data.imageUrl.isNotEmpty()){
             Picasso.get().load(data.imageUrl).into(imageBankSampah)
@@ -62,6 +75,23 @@ class DetailBankSampahActivity : AppCompatActivity() {
             Intent(this,HomeActivity::class.java).let {
                 startActivity(it)
             }
+        }
+        buttonMessage.setOnClickListener {
+            dialog.setContentView(R.layout.perbaikan)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val imageViewClose = dialog.findViewById<ImageButton>(R.id.img_button_close_repair)
+            val buttonOk = dialog.findViewById<Button>(R.id.btn_ok_repair)
+
+            imageViewClose.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
+            }
+            buttonOk.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
+            }
+            dialog.show()
         }
         namaJalanBankSampah.text = data.street
 //        fragment detail
@@ -81,17 +111,20 @@ class DetailBankSampahActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (i in snapshot.child("transaksi").children){
-                    Log.d(TAG, "onDataChange: ${i.key.equals(auth.currentUser?.uid.toString() + data.id)}")
-                    if (!i.key.equals(auth.currentUser?.uid.toString() + data.id)){
+                    Log.d(TAG, "onDataChange: ${i.key.equals(data.id)}")
+                    if (!i.key.equals(data.id)){
                         buttonBerlangganan.isActivated = true
+                            showLoading(false)
                         buttonBerlangganan.setOnClickListener {
                             val intent = Intent(this@DetailBankSampahActivity, TransaksiActivity::class.java)
                             intent.putExtra(TransaksiActivity.GET_ID_BANK_SAMPAH,data)
                             startActivity(intent)
                         }
                     }else{
-                        buttonBerlangganan.isActivated = false
+                        showLoading(false)
                         Toast.makeText(this@DetailBankSampahActivity,"Bank Sampah Sudah dipesan",Toast.LENGTH_SHORT).show()
+                        buttonBerlangganan.isActivated = false
+                        buttonBerlangganan.isClickable = false
                     }
                 }
             }
@@ -101,6 +134,15 @@ class DetailBankSampahActivity : AppCompatActivity() {
             }
         } )
 
+    }
+
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            progressBarDetail.visibility = View.VISIBLE
+        } else {
+            progressBarDetail.visibility = View.GONE
+        }
     }
     companion object{
         const val EXTRA_DATA_BANK_SAMPAH = "DATA_BANK_SAMPAH"

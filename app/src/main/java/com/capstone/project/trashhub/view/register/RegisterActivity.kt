@@ -1,12 +1,18 @@
 package com.capstone.project.trashhub.view.register
 
+import android.app.Dialog
 import android.content.ContentValues
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.databinding.ActivityRegisterBinding
 import com.capstone.project.trashhub.view.home.HomeActivity
 import com.capstone.project.trashhub.view.login.LoginActivity
@@ -22,6 +28,7 @@ class RegisterActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var fireStore : FirebaseFirestore
     private lateinit var databaseReferences : DatabaseReference
+    private lateinit var dialog: Dialog
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,9 +37,27 @@ class RegisterActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         databaseReferences = FirebaseDatabase.getInstance().getReferenceFromUrl("https://trashhub-e7744-default-rtdb.firebaseio.com/")
         fireStore = FirebaseFirestore.getInstance()
+        dialog = Dialog(this)
         setupAction()
         showLoading(false)
 
+        binding.btnRegisterBankSampah.setOnClickListener {
+            dialog.setContentView(R.layout.perbaikan)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val imageViewClose = dialog.findViewById<ImageButton>(R.id.img_button_close_repair)
+            val buttonOk = dialog.findViewById<Button>(R.id.btn_ok_repair)
+
+            imageViewClose.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
+            }
+            buttonOk.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
+            }
+            dialog.show()
+        }
     }
 
     private fun setupAction() {
@@ -112,7 +137,7 @@ class RegisterActivity : AppCompatActivity() {
                     val user = hashMapOf(
                         "id" to userId,
                         "name" to name,
-                        "jenisKelamin" to 0,
+                        "jenisKelamin" to "",
                         "noHp" to "",
                         "photoUrl" to "",
                         "alamat" to "",

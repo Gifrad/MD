@@ -12,7 +12,7 @@
     <string name="password">Password</string>
     <string name="register">Register</string>
     <string name="login">Login</string>
-    <string name="login_option">Atau masuk dengan</string>
+    <string name="login_option">Atau Masuk sebagai Bank Sampah</string>
     <string name="title_register">Kelola sampah anda</string>
     <string name="subtitle_register">Dengan mendaftarkan diri anda melalui TrashHub App</string>
     <string name="name">Nama</string>
@@ -53,14 +53,14 @@
 
     <!-- Scan Sampah -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="perubahan_cardboard">1000/kg</string>
-    <string name="perubahan_metal">1500/kg</string>
-    <string name="perubahan_plastic">500/kg</string>
+    <string name="perubahan_cardboard">Rp 1000/kg</string>
+    <string name="perubahan_metal">Rp 1500/kg</string>
+    <string name="perubahan_plastic">Rp 500/kg</string>
     <string name="perubahan_sampah">-</string>
-    <string name="perubahan_glass">500/kg</string>
-    <string name="perubahan_paper">1000/kg</string>
+    <string name="perubahan_glass">Rp 500/kg</string>
+    <string name="perubahan_paper">Rp 1000/kg</string>
     <string name="take_picture">Ambil Gambar</string>
-    <string name="classification_as">Diklasifikasin sebagai:</string>
+    <string name="classification_as">Diklasifikasikan sebagai:</string>
     <string name="result">Hasil</string>
     <string name="confidence_level">Tingkat Akurasi:</string>
     <string name="list_accuration">Akurasi</string>

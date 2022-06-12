@@ -7,8 +7,12 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.databinding.ActivityProfileBinding
 import com.capstone.project.trashhub.view.home.HomeActivity
@@ -22,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
+import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 import java.lang.Exception
 
@@ -30,21 +35,47 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var imageUri: Uri
     private lateinit var auth: FirebaseAuth
     private lateinit var firebaseFirestore: FirebaseFirestore
+    private lateinit var imageProfile : CircleImageView
 
+    private lateinit var poin: String
+    private lateinit var spinnerValue: String
+    private lateinit var arrayAdapter : ArrayAdapter<String>
+    val gender = arrayOf("laki-laki","perempuan")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        poin = intent.getStringExtra("poin").toString()
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        imageProfile = findViewById(R.id.img_profile)
         auth = FirebaseAuth.getInstance()
         firebaseFirestore = FirebaseFirestore.getInstance()
+
+        spinnerValue = ""
+        arrayAdapter = ArrayAdapter<String>(this,android.R.layout.simple_spinner_dropdown_item,gender)
+        binding.spinnerGenderProfile.adapter = arrayAdapter
+        binding.spinnerGenderProfile.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                if (gender[p2] == "laki-laki"){
+                    spinnerValue = "laki-laki"
+                }
+                else if (gender[p2] == "perempuan"){
+                    spinnerValue = "perempuan"
+                }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+        }
         setupAction()
+        showLoading(true)
+
     }
 
     private fun setupAction() {
         val user = auth.currentUser
-        val name = binding.nameEdtText.text.toString()
-        val noHp = binding.noHpEdtText.text.toString()
 
         if (user != null) {
             if (user.photoUrl != null) {
@@ -53,15 +84,37 @@ class ProfileActivity : AppCompatActivity() {
                 Picasso.get().load(R.drawable.ic_baseline_person_50).into(binding.imgProfile)
             }
 
-            binding.nameEdtText.setText(user.displayName)
             binding.emailEdtText.setText(user.email)
-            firebaseFirestore.collection(PROFILE_NAME).whereEqualTo("id", user.uid)
+            firebaseFirestore.collection(PROFILE_NAME).document(user.uid)
                 .get()
                 .addOnSuccessListener { result ->
-                    for (r in result) {
-                        Log.d("TAG", "${r.id} => ${r.data.get("photoUrl")}")
-//                        binding.imgProfile.setImageResource(r.data.get("photoUrl"))
+                        Log.d("TAG", " => ${result.data?.get("alamat")}")
+                    if (result.data?.get("photoUrl") != null) {
+                        Glide.with(this)
+                            .load(result.data?.get("photoUrl"))
+                            .into(binding.imgProfile)
+                        showLoading(false)
+                    }else{
+                        Glide.with(this)
+                            .load(R.drawable.icon_camera)
+                            .into(binding.imgProfile)
+                        showLoading(false)
                     }
+                        binding.nameEdtText.setText(result.data?.get("name").toString())
+                        binding.alamatEdtText.setText(result.data?.get("alamat").toString())
+                        binding.noHpEdtText.setText(result.data?.get("noHp").toString())
+                    if (result.data?.get("noHp").toString() != null){
+                        val spinnerPosition = arrayAdapter.getPosition(result.data?.get("jenisKelamin").toString())
+                        binding.spinnerGenderProfile.setSelection(spinnerPosition)
+                        if (spinnerPosition == 0){
+                            spinnerValue = "laki-laki"
+                        }else if(spinnerPosition == 1){
+                            spinnerValue = "perempuan"
+                        }
+                        Log.d("ProfileActivity", "setupAction: $spinnerPosition")
+                    }
+
+
                 }
                 .addOnFailureListener { exception ->
                     Log.w("TAG", "Error getting documents.", exception)
@@ -74,21 +127,9 @@ class ProfileActivity : AppCompatActivity() {
         }
         binding.btnSimpan.setOnClickListener {
 
-            val image = when {
-                ::imageUri.isInitialized -> imageUri
-                user?.photoUrl == null -> Uri.parse(R.drawable.icon_camera.toString())
-                else -> user.photoUrl
-            }
+            Toast.makeText(this,"klik buttn simpan",Toast.LENGTH_SHORT).show()
 
-            val userDetail = hashMapOf(
-                "id" to user?.uid,
-                "name" to name,
-                "jenisKelamin" to false,
-                "noHp" to noHp,
-                "photoUrl" to image,
-                "alamat" to "",
-                "poin" to ""
-            )
+//            Toast.makeText(this,"image : $image",Toast.LENGTH_SHORT).show()
             firebaseFirestore.collection(PROFILE_NAME)
                 .whereEqualTo("id", user?.uid)
                 .get()
@@ -97,9 +138,24 @@ class ProfileActivity : AppCompatActivity() {
                         if (snapshot.isSuccessful && !snapshot.getResult().isEmpty) {
                             val documentSnapshot = snapshot.getResult().documents.get(0)
                             val documentId = documentSnapshot.id
+                            Log.d("TAG", "onComplete: ${documentSnapshot.data?.get("photoUrl")}")
+                            val d = Log.d("TAG", "onCompleteID: ${documentId}")
+
+                            val image = when {
+                                ::imageUri.isInitialized -> imageUri
+                                else -> documentSnapshot.data?.get("photoUrl")
+                            }
                             firebaseFirestore.collection(PROFILE_NAME)
                                 .document(documentId)
-                                .update(userDetail as Map<String, Any>)
+                                .update(mapOf(
+                                    "id" to user?.uid.toString(),
+                                    "name" to binding.nameEdtText.text.toString(),
+                                    "jenisKelamin" to spinnerValue,
+                                    "noHp" to binding.noHpEdtText.text.toString(),
+                                    "photoUrl" to image.toString(),
+                                    "alamat" to binding.alamatEdtText.text.toString(),
+                                    "poin" to poin
+                                ))
                                 .addOnSuccessListener(object : OnSuccessListener<Void> {
                                     override fun onSuccess(p0: Void?) {
                                         Toast.makeText(
@@ -154,6 +210,8 @@ class ProfileActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK) {
             val imageBitmap = data?.extras?.get("data") as Bitmap
+            Log.d("TAG", "onActivityResult: ${imageBitmap}")
+            showLoading(true)
             uploadImage(imageBitmap)
         }
     }
@@ -162,7 +220,7 @@ class ProfileActivity : AppCompatActivity() {
     private fun uploadImage(imageBitmap: Bitmap) {
         val baos = ByteArrayOutputStream()
         val ref =
-            FirebaseStorage.getInstance().reference.child("img/${FirebaseAuth.getInstance().currentUser?.uid}")
+            FirebaseStorage.getInstance().reference.child("images/${FirebaseAuth.getInstance().currentUser?.uid}")
 
         imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
         val image: ByteArray = baos.toByteArray()
@@ -173,15 +231,26 @@ class ProfileActivity : AppCompatActivity() {
                     ref.downloadUrl.addOnCompleteListener { task ->
                         task.result?.let { uri ->
                             imageUri = uri
-                            binding.imgProfile.setImageBitmap(imageBitmap)
+                            showLoading(false)
+                            imageProfile.setImageBitmap(imageBitmap)
                         }
                     }
+                }else{
+                    showLoading(false)
+                    Toast.makeText(this,"upload gagal",Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            binding.progressBarProfile.visibility = View.VISIBLE
+        } else {
+            binding.progressBarProfile.visibility = View.GONE
+        }
+    }
     companion object {
         const val REQUEST_CAMERA = 100
-        const val PROFILE_NAME = "profile"
+        const val PROFILE_NAME = "Users"
     }
 }

@@ -100,14 +100,11 @@ class TransaksiActivity : AppCompatActivity(), CustomSpinner.OnSpinnerEventsList
         spinnerGender.onItemSelectedListener = object :AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 if (langganan[p2] == "harian"){
-                    Toast.makeText(this@TransaksiActivity,"2000",Toast.LENGTH_SHORT).show()
                     spinnerValue = "2000"
                 }
                 else if (langganan[p2] == "mingguan"){
-                    Toast.makeText(this@TransaksiActivity,"5000",Toast.LENGTH_SHORT).show()
                     spinnerValue = "5000"
                 }else if (langganan[p2] == "bulanan"){
-                    Toast.makeText(this@TransaksiActivity,"10000",Toast.LENGTH_SHORT).show()
                     spinnerValue = "10000"
                 }
             }

@@ -25,7 +25,6 @@ import com.capstone.project.trashhub.view.detailbanksampah.DetailBankSampahActiv
 import com.capstone.project.trashhub.view.login.LoginActivity
 import com.capstone.project.trashhub.view.maps.MapsActivity
 import com.capstone.project.trashhub.view.profile.ProfileActivity
-import com.capstone.project.trashhub.view.riwayat.RiwayatActivity
 import com.capstone.project.trashhub.view.scan.ResultScanActivity
 import com.capstone.project.trashhub.view.search.SearchActivity
 import com.denzcoskun.imageslider.ImageSlider
@@ -47,31 +46,43 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var dateFormat: SimpleDateFormat
     private lateinit var calendar: Calendar
     private lateinit var dialog: Dialog
+    private lateinit var poin :String
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
         firebaseFirestore = FirebaseFirestore.getInstance()
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-        userValidation()
-        showLoading(true)
-        setupAction()
-        setupViewModel()
-
         val documentReference = firebaseFirestore.collection("Users")
-        
+        val firebaseUser = auth.currentUser
+
         documentReference.document(auth.currentUser?.uid.toString())
             .get()
             .addOnSuccessListener {
                 if (it.data?.get("poin")?.equals("") == false){
                     binding.tvPrice.text = it.data?.get("poin").toString()
+                    poin = it.data?.get("poin").toString()
                 }else{
                     binding.tvPrice.text = "-"
+                    poin = "-"
                 }
                 Log.d(TAG, "onCreate: ${it.data}")
             }
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        if (firebaseUser == null) {
+            // Not signed in, launch the Login activity
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+            return
+        } else {
+            binding.tvUsername.text = "Hai ${firebaseUser.displayName}"
+        }
+        userValidation()
+        showLoading(true)
+        setupAction()
+        setupViewModel()
+
 
         sliderView = findViewById(R.id.img_home)
         textSapaan = findViewById(R.id.tv_sapaan_waktu)
@@ -104,7 +115,9 @@ class HomeActivity : AppCompatActivity() {
             signOut()
         }
         binding.imgProfile.setOnClickListener {
-            startActivity(Intent(this, ProfileActivity::class.java))
+            val intentProfile = Intent(this, ProfileActivity::class.java)
+            intentProfile.putExtra("poin",poin)
+            startActivity(intentProfile)
         }
         binding.etSearch.setOnClickListener {
             startActivity(Intent(this, SearchActivity::class.java))
@@ -184,23 +197,27 @@ class HomeActivity : AppCompatActivity() {
             dialog.show()
         }
         binding.iconRiwayat.setOnClickListener {
-            Intent(this,RiwayatActivity::class.java).let {
-                startActivity(it)
+            dialog.setContentView(R.layout.perbaikan)
+            dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+            val imageViewClose = dialog.findViewById<ImageButton>(R.id.img_button_close_repair)
+            val buttonOk = dialog.findViewById<Button>(R.id.btn_ok_repair)
+
+            imageViewClose.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
             }
+            buttonOk.setOnClickListener {
+                dialog.dismiss()
+                Toast.makeText(this,"Dialog Close", Toast.LENGTH_SHORT).show()
+            }
+            dialog.show()
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun userValidation() {
-        val firebaseUser = auth.currentUser
-        if (firebaseUser == null) {
-            // Not signed in, launch the Login activity
-            startActivity(Intent(this, LoginActivity::class.java))
-            finish()
-            return
-        } else {
-            binding.tvUsername.text = "Hai ${firebaseUser.displayName}"
-        }
+
     }
 
     private fun setupViewModel() {
