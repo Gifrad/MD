@@ -14,6 +14,7 @@
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/ic_sapaan.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable-v24/icon_camera.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable/custom_input.xml" value="0.1205" />
+        <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/drawable/custom_splash.xml" value="0.1205" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_home.xml" value="0.18055555555555555" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_login.xml" value="0.18" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_main.xml" value="0.20416666666666666" />
@@ -21,6 +22,7 @@
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_register.xml" value="0.25" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_search.xml" value="0.20416666666666666" />
+        <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/activity_splash_screen.xml" value="0.2" />
         <entry key="..\:/BANGKIT 2022/KELAS/Project Capstone/Hasil Capstone/TrashHub/app/src/main/res/layout/item_bank_sampah.xml" value="0.20416666666666666" />
         <entry key="..\:/bangkit/capstone/MD/app/src/main/res/drawable-v24/back_button_search.xml" value="0.184" />
         <entry key="..\:/bangkit/capstone/MD/app/src/main/res/drawable-v24/bg_home.xml" value="0.184" />
@@ -66,5 +68,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.5" />
+      </ProjectState>
+    </option>
   </component>
 </project>
