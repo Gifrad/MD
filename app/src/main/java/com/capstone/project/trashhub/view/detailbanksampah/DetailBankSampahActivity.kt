@@ -107,14 +107,17 @@ class DetailBankSampahActivity : AppCompatActivity() {
         supportActionBar?.elevation = 0f
 
         buttonBerlangganan.isActivated = false
+        buttonBerlangganan.isContextClickable = false
         databaseReferences.addListenerForSingleValueEvent (object : ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
 
                 for (i in snapshot.child("transaksi").children){
-                    Log.d(TAG, "onDataChange: ${i.key.equals(data.id)}")
+                    Log.d(TAG, "onDataChange: ${i}")
                     if (!i.key.equals(data.id)){
-                        buttonBerlangganan.isActivated = true
                             showLoading(false)
+                        buttonBerlangganan.isActivated = true
+                        buttonBerlangganan.isContextClickable = true
+
                         buttonBerlangganan.setOnClickListener {
                             val intent = Intent(this@DetailBankSampahActivity, TransaksiActivity::class.java)
                             intent.putExtra(TransaksiActivity.GET_ID_BANK_SAMPAH,data)
@@ -125,6 +128,8 @@ class DetailBankSampahActivity : AppCompatActivity() {
                         Toast.makeText(this@DetailBankSampahActivity,"Bank Sampah Sudah dipesan",Toast.LENGTH_SHORT).show()
                         buttonBerlangganan.isActivated = false
                         buttonBerlangganan.isClickable = false
+                        buttonBerlangganan.isContextClickable = false
+
                     }
                 }
             }

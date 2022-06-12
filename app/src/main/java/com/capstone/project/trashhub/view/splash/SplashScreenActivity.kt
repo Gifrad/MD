@@ -10,8 +10,6 @@ import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.view.login.LoginActivity
 
 @SuppressLint("CustomSplashScreen")
-
-
 class SplashScreenActivity : AppCompatActivity() {
     private var splashTimeOut: Long = 3000
 

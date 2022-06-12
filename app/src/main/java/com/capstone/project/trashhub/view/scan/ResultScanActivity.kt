@@ -12,6 +12,7 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import com.capstone.project.trashhub.R
@@ -26,6 +27,7 @@ class ResultScanActivity : AppCompatActivity() {
     var result: TextView? = null
     var confidence: TextView? = null
     var detailTeks: TextView? = null
+    var progressBar: ProgressBar? = null
     var imageView: ImageView? = null
     var picture: Button? = null
     var imageSize = 224
@@ -38,6 +40,8 @@ class ResultScanActivity : AppCompatActivity() {
         detailTeks = findViewById(R.id.detailPerubahan)
         imageView = findViewById(R.id.image_view_detail_bank_sampah)
         picture = findViewById(R.id.button)
+        progressBar = findViewById(R.id.progressBarScan)
+        showLoading(true)
             // Launch camera if we have permission
             if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
                 val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -98,6 +102,7 @@ class ResultScanActivity : AppCompatActivity() {
                 }
             }
             val classes = arrayOf("Kaca", "Plastik", "Kardus", "Kertas", "Metal")
+            showLoading(false)
             result?.text = classes[maxPos]
             var s = ""
             for (i in 0 until classes.size) {
@@ -139,5 +144,14 @@ class ResultScanActivity : AppCompatActivity() {
             classifyImage(image)
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+
+    private fun showLoading(state: Boolean) {
+        if (state) {
+            progressBar?.visibility = View.VISIBLE
+        } else {
+            progressBar?.visibility = View.GONE
+        }
     }
 }

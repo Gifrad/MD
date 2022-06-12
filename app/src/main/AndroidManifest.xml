@@ -10,9 +10,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/logo_trashub"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/logo_trashub"
         android:supportsRtl="true"
         android:theme="@style/Theme.TrashHub"
         tools:replace="android:allowBackup">
@@ -48,7 +48,11 @@
             android:exported="false" />
         <activity
             android:name=".view.login.LoginActivity"
+            android:exported="false">
+        </activity>
+        <activity android:name=".view.splash.SplashScreenActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
