@@ -9,7 +9,7 @@ data class ListBankSampah (
     @field:SerializedName("Name")
     var name : String,
 
-    @field:SerializedName("FullAddress")
+    @field:SerializedName("Fulladdress")
     var fullAddress : String,
 
     @field:SerializedName("Street")
@@ -27,7 +27,19 @@ data class ListBankSampah (
     @field:SerializedName("Place_Id")
     var id : String,
 
-    @field:SerializedName("Featured_Image")
-    var featuredImage : String
+    @field:SerializedName("Opening_Hours")
+    var openingHouse : String,
 
-): Parcelable
+    @field:SerializedName("Google_Maps_URL")
+    var googleMapURL : String,
+
+    @field:SerializedName("Phones")
+    var phones : String,
+
+    @field:SerializedName("Municipality")
+    var municipality : String,
+
+    @field:SerializedName("Featured_Image")
+    var imageUrl : String,
+
+    ): Parcelable

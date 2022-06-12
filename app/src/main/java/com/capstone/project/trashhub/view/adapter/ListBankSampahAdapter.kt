@@ -1,18 +1,23 @@
 package com.capstone.project.trashhub.view.adapter
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.capstone.project.trashhub.R
 import com.capstone.project.trashhub.network.model.ListBankSampah
+import com.capstone.project.trashhub.view.detailbanksampah.DetailBankSampahActivity
+import com.squareup.picasso.Picasso
 
-class ListBankSampahAdapter : RecyclerView.Adapter<ListBankSampahAdapter.ListViewHolder>() {
+class ListBankSampahAdapter: RecyclerView.Adapter<ListBankSampahAdapter.ListViewHolder>() {
     private lateinit var onItemClickCallback: OnItemClickCallback
     private val list = ArrayList<ListBankSampah>()
 
@@ -27,17 +32,26 @@ class ListBankSampahAdapter : RecyclerView.Adapter<ListBankSampahAdapter.ListVie
     class ListViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var tvName: TextView = itemView.findViewById(R.id.tv_name_bank_sampah)
         private var tvLocation: TextView = itemView.findViewById(R.id.tv_location)
-        private var imgList: ImageView = itemView.findViewById(R.id.img_bank_sampah)
+        private var imageBankSampah: ImageView = itemView.findViewById(R.id.img_bank_sampah)
 
         fun bind(list: ListBankSampah) {
             with(itemView) {
                 Log.d("ListBankSampahAdapter", "bind: ${list.name}")
                 tvName.text = list.name
                 tvLocation.text = list.street
-                Glide.with(itemView.context)
-                    .load(list.featuredImage)
-                    .placeholder(R.drawable.img_placeholder)
-                    .into(imgList)
+                if(list.imageUrl.isEmpty()){
+                    imageBankSampah.setImageDrawable(null);
+                }else{
+                    Picasso.get().load(list.imageUrl).into(imageBankSampah)
+                }
+                setOnClickListener {
+
+                    val intent = Intent(context, DetailBankSampahActivity::class.java)
+
+                    intent.putExtra(DetailBankSampahActivity.EXTRA_DATA_BANK_SAMPAH,list)
+
+                    itemView.context.startActivity(intent)
+                }
             }
         }
     }

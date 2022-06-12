@@ -120,34 +120,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/email_edt_text" />
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_kelamin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.capstone.project.trashhub.view.customview.CustomSpinner
+            android:id="@+id/spinner_gender_profile"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="5dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_jenisKelamin"
-            app:singleSelection="true">
+            android:spinnerMode="dropdown"
+            android:background="@drawable/spinner_background_down"
+            android:entries="@array/spinnerItems"
+            app:layout_constraintStart_toStartOf="@+id/tv_jenisKelamin"
+            app:layout_constraintTop_toBottomOf="@+id/tv_jenisKelamin" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_male"
-                style="@style/CustomChipStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/male"
-                android:textColor="@color/black" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_female"
-                style="@style/CustomChipStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/female"
-                android:textColor="@color/black" />
-
-
-        </com.google.android.material.chip.ChipGroup>
 
         <TextView
             android:id="@+id/tv_noHp"
@@ -158,7 +143,7 @@
             android:text="@string/no_telepon"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chip_group_kelamin" />
+            app:layout_constraintTop_toBottomOf="@id/spinner_gender_profile" />
 
         <EditText
             android:id="@+id/noHp_edt_text"
@@ -217,6 +202,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/alamat_edt_text" />
 
+        <ProgressBar
+            android:id="@+id/progress_bar_profile"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@+id/img_profile"
+            app:layout_constraintEnd_toEndOf="@+id/img_profile"
+            app:layout_constraintStart_toStartOf="@+id/img_profile"
+            app:layout_constraintTop_toTopOf="@+id/img_profile" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
