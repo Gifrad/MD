@@ -78,7 +78,6 @@ class HomeActivity : AppCompatActivity() {
         } else {
             binding.tvUsername.text = "Hai ${firebaseUser.displayName}"
         }
-        userValidation()
         showLoading(true)
         setupAction()
         setupViewModel()
@@ -214,12 +213,6 @@ class HomeActivity : AppCompatActivity() {
             dialog.show()
         }
     }
-
-    @SuppressLint("SetTextI18n")
-    private fun userValidation() {
-
-    }
-
     private fun setupViewModel() {
         homeViewModel = ViewModelProvider(this)[HomeViewModel::class.java]
 
